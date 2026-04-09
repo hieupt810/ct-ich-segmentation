@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=ich-segmentation
+#SBATCH --partition=amperenodes
+#SBATCH --gres=gpu:1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
+#SBATCH --time=03:00:00
+#SBATCH --output=train.out
+#SBATCH --error=train.err
+
+### Loading the required modules
+module reset
+module load Anaconda3
+module load GCC/14.2.0
+module load CUDA/11.8.0 cuda11.8/toolkit cuDNN/8.9.2.26-CUDA-11.8.0
+
+### Activate the conda environment
+conda activate ct-segmentation
+
+### Running the Python script
+python preprocess.py
+python train.py
+python evaluate.py
